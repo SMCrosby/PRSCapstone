@@ -38,25 +38,39 @@ namespace PRSCapstone.Controllers
         }
 
 
+        [HttpGet("RequestsInReview")]
+        public async Task<ActionResult<List<Request>>> 
+            GetRequestsInReview() {
+            return await _context.Requests.Where(r => r.Status == "REVIEW").ToListAsync();
+
+            
+        }
+        
         /*
 
-        * `RejectionReason` must be provided when the request is rejected
         * The `UserId` is automatically set to the Id of the logged in user.
         * Neither `Status` nor `Total` may be set by the user.These are set by the application only.
         * The `Total` is auto calculated by adding up all the lines currently on the request
-        * There should be a virtual `User` instance in the Request to hold the FK
-        instance when reading a Request
-        * There should be a virtual collection of `RequestLine` instances in the Request to
-        hold the collection of lines related to this Request.
 
-        ### Methods: (other than generated methods)
-
-        * Review(request) - Sets the status of the request for the id provided to "REVIEW"
-        * Approve(request) - Sets the status of the request for the id provided to "APPROVED"
-        * Reject(request) - Sets the status of the request for the id provided to "REJECTED"
+      
         * GetReviews(userId) - Gets requests in review status and now owned by userId
         * */
-        [HttpPut("Review")]                          //Set status to REVIEW
+
+        [HttpPut("ReviewRequest")]                            //Set status to APPROVED if <=50; Otherwise sets to REVIEW
+        public async Task<ActionResult<Request>>
+           ReviewRequest(Request request) {
+            if (request.Total <=50) {
+                request.Status = "APPROVED";
+            }
+            else {
+                request.Status = "REVIEW";
+            }
+            await _context.SaveChangesAsync();
+            return request;
+        }
+
+
+        [HttpPut("Review")]                            //Set status to REVIEW
         public async Task<ActionResult<Request>>
             SetToReview(Request request) {
             request.Status = "REVIEW";
@@ -74,9 +88,9 @@ namespace PRSCapstone.Controllers
 
         [HttpPut("Rejected")]                          //Set status to REJECTED
         public async Task<ActionResult<Request>>
-            SetToRejected(Request request) {
+            SetToRejected(Request request,string rejectionReason) {
             request.Status = "REJECTED";
-            request.RejectionReason = "Just Because";
+            request.RejectionReason = rejectionReason;
             await _context.SaveChangesAsync();
             return request;
         }
