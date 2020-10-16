@@ -38,61 +38,53 @@ namespace PRSCapstone.Controllers
         }
 
 
-        [HttpGet("RequestsInReview")]
-        public async Task<ActionResult<List<Request>>> 
+        [HttpGet("RequestsInReview")]                       //Pulls up Requests that have status set to review
+        public async Task<ActionResult<IEnumerable<Request>>> 
             GetRequestsInReview() {
             return await _context.Requests.Where(r => r.Status == "REVIEW").ToListAsync();
 
-            
         }
+
         
-        /*
 
-        * The `UserId` is automatically set to the Id of the logged in user.
-        * Neither `Status` nor `Total` may be set by the user.These are set by the application only.
-        * The `Total` is auto calculated by adding up all the lines currently on the request
 
-      
-        * GetReviews(userId) - Gets requests in review status and now owned by userId
-        * */
-
-        [HttpPut("ReviewRequest")]                            //Set status to APPROVED if <=50; Otherwise sets to REVIEW
-        public async Task<ActionResult<Request>>
-           ReviewRequest(Request request) {
-            if (request.Total <=50) {
-                request.Status = "APPROVED";
-            }
-            else {
-                request.Status = "REVIEW";
-            }
-            await _context.SaveChangesAsync();
-            return request;
+        [HttpPut("RequestTotal")]                      //Updating The Total Price
+        public async Task<IActionResult>
+          RecalculateRequestTotal(int id, Request request) {
+            var reqTotal = (from rl in await _context.RequestLines.ToListAsync()
+                            join pr in await _context.Products.ToListAsync()
+                            on rl.ProductId equals pr.Id
+                            where rl.RequestId == id                //Only RequestLines who's foreign key(RequestId) matches our Id
+                            select new {
+                                RequestTotal = rl.Quantity * pr.Price       //Creating new Column called RequestTotal
+                            }).Sum(t => t.RequestTotal);
+            request.Total = reqTotal;
+            return await PutRequest(id, request);
         }
 
 
-        [HttpPut("Review")]                            //Set status to REVIEW
-        public async Task<ActionResult<Request>>
-            SetToReview(Request request) {
-            request.Status = "REVIEW";
-            await _context.SaveChangesAsync();
-            return request;
+        [HttpPut("Review/{id}")]                     //Set status to APPROVED if <=50; Otherwise sets to REVIEW
+        public async Task<IActionResult>
+           ReviewRequest(int id, Request request) {
+            request.Status = request.Total <= 50 ? "APPROVED" : "REVIEW";
+            return await PutRequest(id, request);
         }
 
-        [HttpPut("Approved")]                          //Set status to APPROVED
-        public async Task<ActionResult<Request>>
-            SetToApproved(Request request) {
+
+        [HttpPut("Approve/{id}")]                          //Set status to APPROVED
+        public async Task<IActionResult>
+            SetToApproved(int id, Request request) {
             request.Status = "APPROVED";
-            await _context.SaveChangesAsync();
-            return request;
+            return await PutRequest(id, request);
         }
 
-        [HttpPut("Rejected")]                          //Set status to REJECTED
-        public async Task<ActionResult<Request>>
-            SetToRejected(Request request,string rejectionReason) {
+        [HttpPut("Reject/{id}")]                          //Set status to REJECTED
+        public async Task<IActionResult>
+            SetToRejected(int id, Request request,string rejectionReason) {
             request.Status = "REJECTED";
             request.RejectionReason = rejectionReason;
-            await _context.SaveChangesAsync();
-            return request;
+            //await _context.SaveChangesAsync();
+            return await PutRequest(id, request);
         }
 
 
