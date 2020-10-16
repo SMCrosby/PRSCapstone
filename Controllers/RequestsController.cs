@@ -21,7 +21,7 @@ namespace PRSCapstone.Controllers
 
         // GET: api/Requests
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequest() {
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequest() {        //can use .Include for Users/ etc?
             return await _context.Requests.ToListAsync();
         }
 

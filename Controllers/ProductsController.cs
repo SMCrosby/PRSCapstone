@@ -23,9 +23,10 @@ namespace PRSCapstone.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
-            return await _context.Products.ToListAsync();
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts() {
+            return await _context.Products
+                .Include(v => v.Vendor)     //When reading product fill the VendorInstance
+                .ToListAsync();
         }
 
 
@@ -34,7 +35,7 @@ namespace PRSCapstone.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id) {
             var product = await _context.Products
-                                        .Include(v => v.Vendor)     //When reading product fill the VendorInstance
+                                        .Include(v => v.Vendor)     //When reading product fill the VendorInstance --can't use .Find with .Include
                                         .SingleOrDefaultAsync(p => p.Id == id);
             if (product == null) {
                 return NotFound();
