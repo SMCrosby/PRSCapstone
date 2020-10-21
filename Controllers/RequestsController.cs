@@ -48,19 +48,7 @@ namespace PRSCapstone.Controllers
         
 
 
-        [HttpPut("RequestTotal")]                      //Updating The Total Price
-        public async Task<IActionResult>
-          RecalculateRequestTotal(int id, Request request) {
-            var reqTotal = (from rl in await _context.RequestLines.ToListAsync()
-                            join pr in await _context.Products.ToListAsync()
-                            on rl.ProductId equals pr.Id
-                            where rl.RequestId == id                //Only RequestLines who's foreign key(RequestId) matches our Id
-                            select new {
-                                RequestTotal = rl.Quantity * pr.Price       //Creating new Column called RequestTotal
-                            }).Sum(t => t.RequestTotal);
-            request.Total = reqTotal;
-            return await PutRequest(id, request);
-        }
+        
 
 
         [HttpPut("Review/{id}")]                     //Set status to APPROVED if <=50; Otherwise sets to REVIEW

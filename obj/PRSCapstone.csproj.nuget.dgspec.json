@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[3.1.4, )"
             },
+            "microsoft.entityframeworkcore": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
             "microsoft.entityframeworkcore.sqlserver": {
               "target": "Package",
               "version": "[3.1.9, )"

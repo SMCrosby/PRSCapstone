@@ -16,6 +16,9 @@ namespace PRSCapstone.Controllers
     {
         private readonly PRSCapstoneContext _context;
 
+
+
+
         public RequestLinesController(PRSCapstoneContext context)
         {
             _context = context;
@@ -42,31 +45,48 @@ namespace PRSCapstone.Controllers
             return requestLine;
         }
 
+
+
+        //[HttpPut("RequestTotal")]                      //Updating The Total Price
+        private async Task<IActionResult>
+          RecalculateRequestTotal(int id, Request request) {
+            var reqTotal = (from rl in await _context.RequestLines.ToListAsync()
+                            join pr in await _context.Products.ToListAsync()
+                            on rl.ProductId equals pr.Id
+
+                            join req in await _context.Requests.ToListAsync()
+                            on rl.RequestId equals req.Id
+                            where rl.RequestId == id                //Only RequestLines who's foreign key(RequestId) matches our Id
+                            select new {
+                                RequestTotal = rl.Quantity * pr.Price       //Creating new Column called RequestTotal
+                            }).Sum(t => t.RequestTotal);
+            request.Total = reqTotal;
+            await _context.SaveChangesAsync();
+            return (IActionResult)request;
+            //return await PutRequest(id, request);
+        }
+
+   
         // PUT: api/RequestLines/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRequestLine(int id, RequestLine requestLine)
         {
-            if (id != requestLine.Id)
-            {
+            if (id != requestLine.Id){
                 return BadRequest();
             }
 
             _context.Entry(requestLine).State = EntityState.Modified;
 
-            try
-            {
+            try {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RequestLineExists(id))
-                {
+            catch (DbUpdateConcurrencyException) {
+                if (!RequestLineExists(id)) {
                     return NotFound();
                 }
-                else
-                {
+                else {
                     throw;
                 }
             }

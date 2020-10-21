@@ -147,8 +147,6 @@ C:\repos\PRSCapstone\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Workspace
 C:\repos\PRSCapstone\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\repos\PRSCapstone\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\repos\PRSCapstone\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.csproj.CoreCompileInputs.cache
-C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.MvcApplicationPartsAssemblyInfo.cache
 C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.dll
 C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.pdb
 C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.genruntimeconfig.cache
