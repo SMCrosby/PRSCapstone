@@ -152,3 +152,5 @@ C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.pdb
 C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.genruntimeconfig.cache
 C:\repos\PRSCapstone\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
 C:\repos\PRSCapstone\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.local.json
+C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.csproj.CoreCompileInputs.cache
+C:\repos\PRSCapstone\obj\Debug\netcoreapp3.1\PRSCapstone.MvcApplicationPartsAssemblyInfo.cache

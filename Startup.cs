@@ -26,7 +26,9 @@ namespace PRSCapstone {
 
     services.AddDbContext<PRSCapstoneContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("CapstoneContext")));         //Altered which connection string we're using
+        services.AddCors();
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
@@ -34,6 +36,7 @@ namespace PRSCapstone {
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseRouting();
 
