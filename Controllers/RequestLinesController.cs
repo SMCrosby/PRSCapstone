@@ -12,29 +12,25 @@ namespace PRSCapstone.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RequestLinesController : ControllerBase
-    {
+    public class RequestLinesController : ControllerBase {
         private readonly PRSCapstoneContext _context;
 
 
 
 
-        public RequestLinesController(PRSCapstoneContext context)
-        {
+        public RequestLinesController(PRSCapstoneContext context) {
             _context = context;
         }
 
         // GET: api/RequestLines
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RequestLine>>> GetRequestLines()
-        {
+        public async Task<ActionResult<IEnumerable<RequestLine>>> GetRequestLines() {
             return await _context.RequestLines.ToListAsync();
         }
 
         // GET: api/RequestLines/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RequestLine>> GetRequestLine(int id)
-        {
+        public async Task<ActionResult<RequestLine>> GetRequestLine(int id) {
             var requestLine = await _context.RequestLines.FindAsync(id);
 
             if (requestLine == null)
@@ -45,10 +41,25 @@ namespace PRSCapstone.Controllers
             return requestLine;
         }
 
+       /* // GET: api/RequestLines/10  --example --gets requestlines with same request id
+        [HttpGet("{requestid}")]
+        public async Task<ActionResult<RequestLine>> GetMatchingRL(int requestid) {
+            var lineItems[] = (from rl in await _context.RequestLines.ToListAsync()
+                               join r in await _context.Requests.ToListAsync()
+                               on rl.RequestId equals r.Id
 
+                               where rl.RequestId == r.Id
+                               if RequestLine.RequestId == requestid =>
+                                              //Only RequestLines who's foreign key(RequestId) matches our Id
+                           
+            //await _context.SaveChangesAsync();
+            return (IActionResult)lineItems[];
+        }
+    }*/
+   
 
-        //[HttpPut("RequestTotal")]                      //Updating The Total Price
-        private async Task<IActionResult>
+    //[HttpPut("RequestTotal")]                      //Updating The Total Price
+    private async Task<IActionResult>
           RecalculateRequestTotal(int id, Request request) {
             var reqTotal = (from rl in await _context.RequestLines.ToListAsync()
                             join pr in await _context.Products.ToListAsync()
