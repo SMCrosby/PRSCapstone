@@ -40,22 +40,6 @@ namespace PRSCapstone.Controllers
 
             return requestLine;
         }
-
-       /* // GET: api/RequestLines/10  --example --gets requestlines with same request id
-        [HttpGet("{requestid}")]
-        public async Task<ActionResult<RequestLine>> GetMatchingRL(int requestid) {
-            var lineItems[] = (from rl in await _context.RequestLines.ToListAsync()
-                               join r in await _context.Requests.ToListAsync()
-                               on rl.RequestId equals r.Id
-
-                               where rl.RequestId == r.Id
-                               if RequestLine.RequestId == requestid =>
-                                              //Only RequestLines who's foreign key(RequestId) matches our Id
-                           
-            //await _context.SaveChangesAsync();
-            return (IActionResult)lineItems[];
-        }
-    }*/
    
 
     //[HttpPut("RequestTotal")]                      //Updating The Total Price
