@@ -40,10 +40,20 @@ namespace PRSCapstone.Controllers
 
             return requestLine;
         }
-   
 
-    //[HttpPut("RequestTotal")]                      //Updating The Total Price
-    private async Task<IActionResult>
+
+        [HttpGet("Request/{requestId}")]                       //Pulls up RequestsLines with RequestId
+        public async Task<ActionResult<IEnumerable<RequestLine>>>
+            GetRequestsLines(int requestId) {
+            return await _context.RequestLines.Where(rl => rl.RequestId == requestId)
+                                            .ToListAsync();
+
+        }
+
+
+
+        //[HttpPut("RequestTotal")]                      //Updating The Total Price
+        private async Task<IActionResult>
           RecalculateRequestTotal(int id, Request request) {
             var reqTotal = (from rl in await _context.RequestLines.ToListAsync()
                             join pr in await _context.Products.ToListAsync()

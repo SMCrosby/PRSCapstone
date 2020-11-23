@@ -22,7 +22,9 @@ namespace PRSCapstone.Controllers
         // GET: api/Requests
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequest() {        //can use .Include for Users/ etc?
-            return await _context.Requests.Include(x => x.User).ToListAsync();
+            return await _context.Requests
+                                    .Include(x => x.User)
+                                    .ToListAsync();
         }
 
         // GET: api/Requests/5
@@ -40,10 +42,12 @@ namespace PRSCapstone.Controllers
         }
 
 
-        [HttpGet("RequestsInReview")]                       //Pulls up Requests that have status set to review
+        [HttpGet("Review/{userId}")]                       //Pulls up Requests that have status set to review
         public async Task<ActionResult<IEnumerable<Request>>> 
-            GetRequestsInReview() {
-            return await _context.Requests.Include(x => x.User).Where(r => r.Status == "REVIEW").ToListAsync();
+            GetRequestsInReview(int userId) {
+            return await _context.Requests.Include(x => x.User)
+                                            .Where(r => r.Status == "REVIEW" && r.UserId != userId)
+                                            .ToListAsync();
 
         }
 
